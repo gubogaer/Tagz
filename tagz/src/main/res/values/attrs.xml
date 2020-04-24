@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TagViewGroup">
+        <attr name="vertical_interval" format="dimension"/>
+        <attr name="horizontal_interval" format="dimension"/>
+        <attr name="gravity" format="enum">
+            <enum name="left" value="3" />
+            <enum name="center" value="17" />
+            <enum name="right" value="5" />
+        </attr>
+    </declare-styleable>
+</resources>
