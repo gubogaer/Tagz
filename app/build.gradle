@@ -1,13 +1,12 @@
-apply plugin: 'com.android.application'
-apply plugin: 'maven-publish'
-group = 'com.example.tagz'
+apply plugin: 'com.android.library'
+
 
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
 
     defaultConfig {
-        applicationId "com.example.mylibrary"
+        //applicationId "com.example.mylibrary"
         minSdkVersion 16
         targetSdkVersion 29
         versionCode 1
