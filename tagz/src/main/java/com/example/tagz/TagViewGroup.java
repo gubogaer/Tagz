@@ -32,7 +32,9 @@ public class TagViewGroup extends ViewGroup {
     public void setTags(List<String> tags){
         this.tags = tags;
         if(tags != null){
-
+            for(String tagString : tags){
+                addTag(tagString);
+            }
         }
     }
 
