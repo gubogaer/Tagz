@@ -23,23 +23,29 @@ public class TagViewGroup extends ViewGroup {
     private int horizontalInterval = 5;
     private int verticalInterval = 7;
 
-    private List<String> tags;
     private List<TagView> tagViews;
     private int numberOfFrontTags;
 
-    private List<Integer> absolutePositions;
 
     public void setTags(List<String> tags){
-        this.tags = tags;
+
         if(tags != null){
             for(String tagString : tags){
-                addTag(tagString);
+                TagView tv = new TagView(getContext(),tagString, td);
+
+
+
+                tagViews.add(tv);
+                tv.setTag(tagViews.size() - 1);
+                addView(tv);
+
             }
+            postInvalidate();
         }
     }
 
     public void addTag(String text){
-        addTag(text, tags.size());
+        addTag(text, tagViews.size());
     }
     public void addTag(String text, int pos){
 
@@ -52,7 +58,7 @@ public class TagViewGroup extends ViewGroup {
         TagView tv = new TagView(getContext(),text, td);
         tv.setTag(pos);
 
-        this.tags.add(pos, text);
+
         tagViews.add(pos, tv);
         addView(tv, pos);
         postInvalidate();
@@ -67,7 +73,7 @@ public class TagViewGroup extends ViewGroup {
             }
         }
 
-        this.tags.remove(position);
+
         removeView(tagViews.get(position));
         tagViews.remove(position);
         postInvalidate();
@@ -192,7 +198,7 @@ public class TagViewGroup extends ViewGroup {
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
 
         tagViews = new ArrayList<>();
-        tags = new ArrayList<>();
+
         TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.TagViewGroup, defStyleAttr, 0);
 
         verticalInterval = (int)attributes.getDimension(R.styleable.TagViewGroup_vertical_interval, dpToPx(verticalInterval));

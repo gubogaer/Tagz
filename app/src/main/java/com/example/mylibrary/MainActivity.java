@@ -6,6 +6,9 @@ import android.os.Bundle;
 
 import com.example.tagz.TagViewGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -13,12 +16,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        List<String> tags = new ArrayList<>();
+        tags.add("test1");
+        tags.add("test2");
+        tags.add("test3");
+        tags.add("test4");
+        tags.add("test5");
+        tags.add("test6");
+
         TagViewGroup tvg = findViewById(R.id.tagViewGroup);
-        tvg.addTag("tTOHFHGGklgjfl");
-        tvg.addTag("hallo");
-        tvg.addTag("user");
-        tvg.addTag("pannnenkoek");
-        tvg.addTag("noob");
-        tvg.addTag("werkt het??");
+        tvg.setTags(tags);
+        tvg.addTag("nog eentje");
+
     }
 }
