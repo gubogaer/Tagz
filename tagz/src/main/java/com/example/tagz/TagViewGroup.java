@@ -44,7 +44,7 @@ public class TagViewGroup extends ViewGroup {
                 System.out.println(entry.getText() + " is gone");
             }
         }
-        invalidate();
+
     }
 
 
