@@ -27,6 +27,30 @@ public class TagViewGroup extends ViewGroup {
     private int numberOfFrontTags;
 
 
+    public void removeFilter(){
+        filterTags(".*");
+    }
+
+
+    public void filterTags(String regex){
+        for (TagView entry : tagViews) {
+            if (entry.getText().matches(regex)) {
+                entry.setVisibility(View.VISIBLE);
+                entry.invalidate();
+                System.out.println(entry.getText() + " is visible");
+            } else {
+                entry.setVisibility(View.GONE);
+                entry.invalidate();
+                System.out.println(entry.getText() + " is gone");
+            }
+        }
+        invalidate();
+    }
+
+
+
+
+
     public void setTags(List<String> tags){
 
         if(tags != null){
@@ -122,6 +146,7 @@ public class TagViewGroup extends ViewGroup {
         newPos += (int)tv.getTag();
         addView(tv, newPos);
         tagViews.add(newPos, tv);
+
     }
 
     public void repositionTag(int src, int dest){ //abspos veranderd niet
@@ -330,7 +355,7 @@ public class TagViewGroup extends ViewGroup {
             int startNotCenteredIndex = 0;
             for (int i = 0; i < count; i++) {
                 final View child = getChildAt(i);
-                if (child.getVisibility() != GONE) {
+                if (child.getVisibility() != INVISIBLE) {
                     int width = child.getMeasuredWidth();
                     int height = child.getMeasuredHeight();
 
@@ -356,7 +381,11 @@ public class TagViewGroup extends ViewGroup {
                     }
                     xCoords.add(leftVal);
                     rowHeight = Math.max(rowHeight, height);
-                    leftVal += width + horizontalInterval;
+                    if(child.getVisibility() != GONE) {
+                        leftVal += horizontalInterval;
+                    }
+                    leftVal += width;
+
 
                     if(i == count - 1){
                         for(int x = startNotCenteredIndex; x <= i; x++){

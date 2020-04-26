@@ -14,6 +14,7 @@ public class TagView extends View {
 
     TagView thiis = this;
 
+
     private View.OnClickListener OnTagClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -51,6 +52,8 @@ public class TagView extends View {
     private boolean isSelected = false;
 
     private RectF rectF;
+
+
 
     public void toggleIsSelected(){
         isSelected = !isSelected;
