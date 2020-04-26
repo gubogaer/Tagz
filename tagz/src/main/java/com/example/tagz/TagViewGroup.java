@@ -36,7 +36,7 @@ public class TagViewGroup extends ViewGroup {
         for (TagView entry : tagViews) {
             if (entry.getText().matches(regex)) {
                 entry.setVisibility(View.VISIBLE);
-                
+
                 entry.invalidate();
             } else {
                 entry.setVisibility(View.GONE);
@@ -44,7 +44,7 @@ public class TagViewGroup extends ViewGroup {
                 entry.invalidate();
             }
         }
-        postInvalidate();
+        invalidate();
 
     }
 
@@ -350,33 +350,34 @@ public class TagViewGroup extends ViewGroup {
                 }
             }
         } else { //gravity = Gravity.CENTER
+            System.out.println("onLayout() function called");
             int leftVal = contentLeftBorder;
-            int coordinates[] = new int[count * 2];
             ArrayList<Integer> xCoords = new ArrayList<>();
             int startNotCenteredIndex = 0;
 
-            int counter = 0;
+            int counter1 = 0;
+            int counter2 = 0;
             for (int i = 0; i < count; i++) {
                 final View child = getChildAt(i);
                 if (child.getVisibility() != GONE) {
-                    counter ++;
 
                     int width = child.getMeasuredWidth();
                     int height = child.getMeasuredHeight();
 
                     if(leftVal + width > contentRightBorder){
 
-                        int childIndex = startNotCenteredIndex;
+                        int childIndex = 0;
                         for(int x = startNotCenteredIndex; x < i; x++){
                             final View centeredChild = getChildAt(x);
                             if (centeredChild.getVisibility() != GONE) {
-                                int leftCoord = xCoords.get(childIndex - startNotCenteredIndex) + (contentRightBorder - leftVal)/2;
+                                int leftCoord = xCoords.get(childIndex) + (contentRightBorder - leftVal)/2;
                                 centeredChild.layout(
                                         leftCoord,
                                         topVal,
                                         leftCoord + centeredChild.getMeasuredWidth(),
                                         topVal + centeredChild.getMeasuredHeight()
                                 );
+                                counter1 ++;
                                 childIndex ++;
                             }
 
@@ -394,22 +395,26 @@ public class TagViewGroup extends ViewGroup {
                     leftVal += width;
                 }
                 if(i == count - 1){
-                    int childIndex = startNotCenteredIndex;
+                    int childIndex = 0;
                     for(int x = startNotCenteredIndex; x <= i; x++){
                         final View centeredChild = getChildAt(x);
                         if (centeredChild.getVisibility() != GONE) {
-                            int leftCoord = xCoords.get(childIndex - startNotCenteredIndex) + (contentRightBorder - leftVal)/2;
+                            int leftCoord = xCoords.get(childIndex) + (contentRightBorder - leftVal)/2;
                             centeredChild.layout(
                                     leftCoord,
                                     topVal,
                                     leftCoord + centeredChild.getMeasuredWidth(),
                                     topVal + centeredChild.getMeasuredHeight()
                             );
+                            counter2 ++;
                             childIndex++;
                         }
                     }
                 }
             }
+            System.out.println("number of changed tagposition (draxn tags) : " + (counter1 + counter2));
+            System.out.println("waarvan  " + counter1 + "in de eerste lijnen");
+            System.out.println("waarvan  " + counter2 + "in de laatste lijn");
         }
     }
 }
