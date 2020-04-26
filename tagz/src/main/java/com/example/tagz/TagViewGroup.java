@@ -36,11 +36,11 @@ public class TagViewGroup extends ViewGroup {
         for (TagView entry : tagViews) {
             if (entry.getText().matches(regex)) {
                 entry.setVisibility(View.VISIBLE);
-                System.out.println("set visible : " + entry.getText());
+                
                 entry.invalidate();
             } else {
                 entry.setVisibility(View.GONE);
-                System.out.println("set Gone : " + entry.getText());
+
                 entry.invalidate();
             }
         }
@@ -88,7 +88,6 @@ public class TagViewGroup extends ViewGroup {
         tagViews.add(pos, tv);
         addView(tv, pos);
         postInvalidate();
-        tv.toggle();
         return tv;
     }
 
