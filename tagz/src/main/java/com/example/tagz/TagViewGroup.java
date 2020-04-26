@@ -67,8 +67,9 @@ public class TagViewGroup extends ViewGroup {
         }
     }
 
-    public void addTag(String text){
+    public int addTag(String text){
         addTag(text, tagViews.size());
+        return(tagViews.size());
     }
     public void addTag(String text, int pos){
 
