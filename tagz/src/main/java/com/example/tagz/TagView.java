@@ -18,10 +18,14 @@ public class TagView extends View {
     private View.OnClickListener OnTagClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            toggleIsSelected();
-            td.parent.toggleTagToFront(thiis);
+            toggle();
         }
     };
+
+    public void toggle(){
+        toggleIsSelected();
+        td.parent.toggleTagToFront(thiis);
+    }
 
     public static class Tagdata {
         public TagViewGroup parent;

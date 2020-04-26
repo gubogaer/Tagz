@@ -67,11 +67,11 @@ public class TagViewGroup extends ViewGroup {
         }
     }
 
-    public int addTag(String text){
-        addTag(text, tagViews.size());
-        return(tagViews.size());
+    public TagView addTag(String text){
+        return addTag(text, tagViews.size());
+
     }
-    public void addTag(String text, int pos){
+    public TagView addTag(String text, int pos){
 
         for(View view : tagViews){
             int absPos = (int)view.getTag();
@@ -86,6 +86,8 @@ public class TagViewGroup extends ViewGroup {
         tagViews.add(pos, tv);
         addView(tv, pos);
         postInvalidate();
+        tv.toggle();
+        return tv;
     }
 
     public void removeTag(int position){
@@ -144,7 +146,7 @@ public class TagViewGroup extends ViewGroup {
         newPos += (int)tv.getTag();
         addView(tv, newPos);
         tagViews.add(newPos, tv);
-
+        postInvalidate();
     }
 
     public void repositionTag(int src, int dest){ //abspos veranderd niet
