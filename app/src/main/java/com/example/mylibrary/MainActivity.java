@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void search(String text){
         TagViewGroup tvg = findViewById(R.id.tagViewGroup);
-        opzoekString = text;
-        tvg.filterTags(".*" + text + ".*");
+        opzoekString = text.trim();
+        tvg.filterTags(".*" + opzoekString + ".*");
     }
 }
