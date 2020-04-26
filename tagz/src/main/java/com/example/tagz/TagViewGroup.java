@@ -37,13 +37,12 @@ public class TagViewGroup extends ViewGroup {
             if (entry.getText().matches(regex)) {
                 entry.setVisibility(View.VISIBLE);
                 entry.invalidate();
-                System.out.println(entry.getText() + " is visible");
             } else {
                 entry.setVisibility(View.GONE);
                 entry.invalidate();
-                System.out.println(entry.getText() + " is gone");
             }
         }
+        postInvalidate();
 
     }
 
@@ -110,11 +109,9 @@ public class TagViewGroup extends ViewGroup {
     public void toggleTagToFront(int position){
         if (position < numberOfFrontTags) { // tag is in front
             tagToOriginalPosition(position);
-            System.out.println("terug naar abs pos");
 
         } else { // tag is not in front
             tagToFrontPosition(position);
-            System.out.println("naar voor");
         }
     }
 
@@ -353,24 +350,32 @@ public class TagViewGroup extends ViewGroup {
             int coordinates[] = new int[count * 2];
             ArrayList<Integer> xCoords = new ArrayList<>();
             int startNotCenteredIndex = 0;
+
+            int counter = 0;
             for (int i = 0; i < count; i++) {
                 final View child = getChildAt(i);
-                if (child.getVisibility() != INVISIBLE) {
+                if (child.getVisibility() != GONE) {
+                    counter ++;
+
                     int width = child.getMeasuredWidth();
                     int height = child.getMeasuredHeight();
 
                     if(leftVal + width > contentRightBorder){
 
+                        int childIndex = startNotCenteredIndex;
                         for(int x = startNotCenteredIndex; x < i; x++){
                             final View centeredChild = getChildAt(x);
+                            if (centeredChild.getVisibility() != GONE) {
+                                int leftCoord = xCoords.get(childIndex - startNotCenteredIndex) + (contentRightBorder - leftVal)/2;
+                                centeredChild.layout(
+                                        leftCoord,
+                                        topVal,
+                                        leftCoord + centeredChild.getMeasuredWidth(),
+                                        topVal + centeredChild.getMeasuredHeight()
+                                );
+                                childIndex ++;
+                            }
 
-                            int leftCoord = xCoords.get(x - startNotCenteredIndex) + (contentRightBorder - leftVal)/2;
-                            centeredChild.layout(
-                                    leftCoord,
-                                    topVal,
-                                    leftCoord + centeredChild.getMeasuredWidth(),
-                                    topVal + centeredChild.getMeasuredHeight()
-                            );
 
                         }
                         topVal += rowHeight + verticalInterval;
@@ -381,91 +386,26 @@ public class TagViewGroup extends ViewGroup {
                     }
                     xCoords.add(leftVal);
                     rowHeight = Math.max(rowHeight, height);
-                    if(child.getVisibility() != GONE) {
-                        leftVal += horizontalInterval;
-                    }
+                    leftVal += horizontalInterval;
                     leftVal += width;
-
-
-                    if(i == count - 1){
-                        for(int x = startNotCenteredIndex; x <= i; x++){
-                            final View centeredChild = getChildAt(x);
-
-                            int leftCoord = xCoords.get(x - startNotCenteredIndex) + (contentRightBorder - leftVal)/2;
+                }
+                if(i == count - 1){
+                    int childIndex = startNotCenteredIndex;
+                    for(int x = startNotCenteredIndex; x <= i; x++){
+                        final View centeredChild = getChildAt(x);
+                        if (centeredChild.getVisibility() != GONE) {
+                            int leftCoord = xCoords.get(childIndex - startNotCenteredIndex) + (contentRightBorder - leftVal)/2;
                             centeredChild.layout(
                                     leftCoord,
                                     topVal,
                                     leftCoord + centeredChild.getMeasuredWidth(),
                                     topVal + centeredChild.getMeasuredHeight()
                             );
+                            childIndex++;
                         }
                     }
                 }
             }
         }
     }
-
-
-
-//    // ----------------------------------------------------------------------
-//    // The rest of the implementation is for custom per-child layout parameters.
-//    // If you do not need these (for example you are writing a layout manager
-//    // that does fixed positioning of its children), you can drop all of this.
-//
-//    @Override
-//    public LayoutParams generateLayoutParams(AttributeSet attrs) {
-//        return new TagViewGroup.LayoutParams(getContext(), attrs);
-//    }
-//
-//    @Override
-//    protected LayoutParams generateDefaultLayoutParams() {
-//        return new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-//    }
-//
-//    @Override
-//    protected ViewGroup.LayoutParams generateLayoutParams(ViewGroup.LayoutParams p) {
-//        return new LayoutParams(p);
-//    }
-//
-//    @Override
-//    protected boolean checkLayoutParams(ViewGroup.LayoutParams p) {
-//        return p instanceof LayoutParams;
-//    }
-//
-//    /**
-//     * Custom per-child layout information.
-//     */
-//    public static class LayoutParams extends MarginLayoutParams {
-//        /**
-//         * The gravity to apply with the View to which these layout parameters
-//         * are associated.
-//         */
-//        public int gravity = Gravity.TOP | Gravity.START;
-//
-//        public static int POSITION_MIDDLE = 0;
-//        public static int POSITION_LEFT = 1;
-//        public static int POSITION_RIGHT = 2;
-//
-//        public int position = POSITION_MIDDLE;
-//
-//        public LayoutParams(Context c, AttributeSet attrs) {
-//            super(c, attrs);
-//
-//            // Pull the layout param values from the layout XML during
-//            // inflation.  This is not needed if you don't care about
-//            // changing the layout behavior in XML.
-//            TypedArray a = c.obtainStyledAttributes(attrs, R.styleable.CustomLayoutLP);
-//            gravity = a.getInt(R.styleable.CustomLayoutLP_android_layout_gravity, gravity);
-//            position = a.getInt(R.styleable.CustomLayoutLP_layout_position, position);
-//            a.recycle();
-//        }
-//
-//        public LayoutParams(int width, int height) {
-//            super(width, height);
-//        }
-//
-//        public LayoutParams(ViewGroup.LayoutParams source) {
-//            super(source);
-//        }
-//    }
 }
